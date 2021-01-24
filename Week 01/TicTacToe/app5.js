@@ -4,7 +4,7 @@ const toeplace = document.getElementById('toeplace');
 if (parseInt(getComputedStyle(toeplace).width) > window.innerHeight) {
     toeplace.style.height = window.innerHeight + 'px';
 } else {
-    toeplace.style.height = window.style.width + 'px';
+    toeplace.style.height = parseInt(getComputedStyle(toeplace).width) + 'px';
 }
 
 const pattern = Array(5).fill(1).map(() => Array(5).fill(0));

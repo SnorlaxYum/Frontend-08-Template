@@ -91,3 +91,30 @@ js大多是正则文法，特例：
     * 子类型
     * 泛型
         * 逆变/协变
+
+## 一般命令式编程语言的设计方式
+
+* Atom
+    * Identifier
+    * Literal
+* Expression
+    * Atom
+    * Operator
+    * Punctuator
+* Statement
+    * Expression
+    * Keyword
+    * Punctuator
+* Structure
+    * Function
+    * Class
+    * Process
+    * Namespace
+    * ……
+* Program
+    * Program
+    * Module
+    * Package
+    * Library
+
+[ 语法 ] **—语义—>** [ **运行时** ]

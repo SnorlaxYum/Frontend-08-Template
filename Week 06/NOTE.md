@@ -62,3 +62,32 @@ js大多是正则文法，特例：
 非终结符：
 * MultiplicativeExpression
 * AddictiveExpression
+
+## 编程语言的性质
+
+* 图灵完备性
+    * 命令式——图灵机
+        * goto
+        * if和while
+    * 声明式——lambda
+        * 递归
+* 动态与静态
+    * 动态
+        * 在用户的设备/在线的服务器上
+        * 产品实际进行时
+        * Runtime
+    * 静态
+        * 在程序员的设备上
+        * 产品开发时
+        * Compiletime
+* 类型系统
+    * 动态类型系统与静态类型系统
+    * 强类型与弱类型
+        * String + Number
+        * String == Boolean
+    * 复合类型
+        * 结构体
+        * 函数签名
+    * 子类型
+    * 泛型
+        * 逆变/协变

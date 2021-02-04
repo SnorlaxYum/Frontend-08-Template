@@ -190,6 +190,22 @@ function UTF8_Encoding(String) {
 }
 ```
 
+### Object
+
+更贴近人类的自然思维
+
+* state
+* identifier
+* behaviour
+
+继承于它的分类Class
+
+对象的行为应该是改变他状态的。
+
+### Symbol
+
+主要用于Object的键（Key）
+
 ### 其它类型
 
 #### Boolean
@@ -202,4 +218,3 @@ function UTF8_Encoding(String) {
 * null
 * undefined（变量）
 * void 0;（产生undefined的安全方法）
-

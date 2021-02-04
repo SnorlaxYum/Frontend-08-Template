@@ -63,7 +63,7 @@ js大多是正则文法，特例：
 * MultiplicativeExpression
 * AddictiveExpression
 
-## 编程语言的性质
+### 编程语言的性质
 
 * 图灵完备性
     * 命令式——图灵机
@@ -92,7 +92,7 @@ js大多是正则文法，特例：
     * 泛型
         * 逆变/协变
 
-## 一般命令式编程语言的设计方式
+### 一般命令式编程语言的设计方式
 
 * Atom
     * Identifier
@@ -118,3 +118,88 @@ js大多是正则文法，特例：
     * Library
 
 [ 语法 ] **—语义—>** [ **运行时** ]
+
+JS对应到：
+
+* Atom
+    * Grammer
+        * Literal
+        * Variable
+        * Keywords
+        * Whitespace
+        * Line Terminator
+    * Runtime
+        * Types
+        * Execution Context
+
+## JS类型
+
+* Number
+* String
+* Boolean
+* Object
+* Null
+* Undefined
+* Symbol
+
+### Number
+
+* IEEE 754 Double Float
+    * Sign (1)
+    * Exponent (11)
+    * Fraction (52)
+
+#### Grammer
+
+* DEcimalLiteral
+    * 0
+    * 0.
+    * .2
+    * 1e3
+* BinaryIntegerLiteral
+    * 0b111
+* OctalIntegerLiteral
+    * 0o10
+* HexIntegerLiteral
+    * 0xFF
+
+`0.`是合法的十进制语法，所以后接方法会出错
+
+`0.toString();` ×
+`0 .toString();` 才会吐出数字
+
+### String
+
+* Character
+* Code Point
+* Encoding
+    * ASCII
+    * Unicode
+    * UCS
+    * GB
+        * GB2312
+        * GBK(GB13000)
+        * GB18030
+    * ISO-8859
+    * BIG5
+
+小练习：一个string代表的字节转换出来
+```js
+function UTF8_Encoding(String) {
+    //return new Buffer();
+}
+```
+
+### 其它类型
+
+#### Boolean
+
+* true
+* false
+
+#### Null & Undefined
+
+* null
+* undefined（变量）
+* void 0;（产生undefined的安全方法）
+

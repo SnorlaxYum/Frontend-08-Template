@@ -202,6 +202,35 @@ function UTF8_Encoding(String) {
 
 对象的行为应该是改变他状态的。
 
+属性：
+* Data Property（defineProperty修改）
+    * [[value]]
+    * writable
+    * enumerable
+    * configurable
+* Accessor Property
+    * get
+    * set
+    * enumerable
+    * configurable
+
+#### API
+
+* {} . [] Object.defineProperty
+* Object.create / Object.setPrototypeOf /
+    Object.getPrototypeOf
+* new / class / extends
+* new / function / prototype（Outdated，尽量不要用）
+
+#### Function
+
+* 带call方法的对象
+
+#### Host Object
+
+……
+
+
 ### Symbol
 
 主要用于Object的键（Key）

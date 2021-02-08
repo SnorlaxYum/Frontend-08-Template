@@ -8,9 +8,9 @@ JavaScript
 * Structure
 * Program/Module
 
-## 运算符和表达式
+## JS表达式
 
-### JS表达式
+### 运算符和表达式
 
 运算优先级由高到底
 
@@ -98,4 +98,55 @@ JavaScript
 
 Number, String, Boolean, Symbol
 new Number(1), new String('a'), new Boolean(true), new Object(Symbol('a'))
+
+## JS语句(Statement)
+
+* Grammer
+    * 简单语句
+    * 组合语句
+    * 声明
+* Runtime
+    * Completion Record
+    * Lexical Environment
+
+### 运行时相关概念
+
+#### Completion Record
+
+* [[type]]: normal, break, continue, return, or throw
+* [[value]]: 基本类型
+* [[target]]: label
+
+### 简单语句和复合语句
+
+简单语句：
+
+* ExpressionStatement
+* EmptyStatement
+* DebuggerStatement
+* ThrowStatement
+* ContinueStatement
+* BreakSTatement
+* ReturnStatement
+
+复合语句：
+* BlockStatement
+    * [[type]]: normal
+    * [[value]]: --
+    * [[target]]: --
+* IfStatement
+* SwitchSTatement（尽量用if替代）
+* IterationStatement
+    * while() {}
+    * do {} while()
+    * for( ; ;)
+    * for( in )
+    * for( of)
+    * for await( of )
+* WithStatement（尽量不要用）
+* LabelledStatement
+* TryStatement
+    * [[type]]: return
+    * [[value]]: --
+    * [[target]]: label
 

@@ -150,3 +150,107 @@ new Number(1), new String('a'), new Boolean(true), new Object(Symbol('a'))
     * [[value]]: --
     * [[target]]: label
 
+### 声明
+
+* FunctionDeclaration
+    * function
+* GeneratorDecalration
+    * function *
+* AsyncFunctionDeclaration
+    * async function
+* AsyncGeneratorDecalration
+    * async function *
+* VariableStatement
+    * var
+* ClassDeclaration
+    * class
+* LexicalDeclaration
+    * const
+    * let
+
+#### 预处理
+
+```
+var a = 2
+void function () {
+    a = 1
+    return
+    var a
+}()
+
+console.log(a)
+```
+
+```
+var a = 2
+void function () {
+    a = 1
+    return
+    const a
+}()
+
+console.log(a)
+```
+
+结果都是2。
+不管变量声明到函数哪个位置，都会让它变成局部变量
+所有声明都有预处理机制，把变量变成局部变量
+
+#### 作用域
+
+```
+var a = 2
+void function() {
+    a = 1
+    {
+        var a
+    }
+}()
+console.log(a)
+```
+
+```
+var a = 2
+void function() {
+    a = 1
+    {
+        const a
+    }
+}()
+console.log(a)
+```
+
+## JS结构化
+
+### 宏任务和微任务
+
+* 宏任务
+* 微任务（Promise）
+* 函数调用（Execution Context）
+* 语句/声明（Completion Record）
+* 表达式（Reference）
+* 直接量/变量/this……
+
+事件循环(Event Loop)：get code -> execute -> wait -> get code……
+
+### JS函数调用
+
+从js文件import变量时，变量如果是函数，执行环境则是被调用的js文件
+
+这种栈式访问——Execution Context Stack
+
+Execution Context
+
+* LexicalEnvironment
+    * this
+    * new.target
+    * super
+    * 变量
+* VariableEnvironment
+    历史包袱，仅仅处理var声明
+* Environment Record
+* Function - CLosure
+    每个函数都会生成一个闭包
+
+* REalm
+    js中产生对象要有原型，REalm用来记录这些原型

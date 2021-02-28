@@ -1,3 +1,12 @@
+// 当前token
+let currentToken = null
+
+//输出token
+function emit(token) {
+    //if(token.type!="text")
+    console.log(token)
+}
+
 const EOF = Symbol("EOF")
 
 function data(c) {
@@ -7,9 +16,16 @@ function data(c) {
     }
     // 文件结束
     if(c == EOF) {
+        emit({
+            type:"EOF"
+        })
         return
     }
-    // 未开始，继续寻找
+    // 文本节点
+    emit({
+        type:"text",
+        content:c
+    })
     return data
 }
 
@@ -20,14 +36,22 @@ function tagOpen(c) {
     }
     // 是字母的话，标签名字开始记录
     if(c.match(/^[a-zA-Z]$/)) {
+        currentToken = {
+            type: "startTag",
+            tagName: ""
+        }
         return tagName(c)
     }
-    // 继续寻找
-    return tagOpen
+    return
 }
 
 function endTagOpen(c) {
+    // 字母
     if(c.match(/^[a-zA-Z]$/)) {
+        currentToken = {
+            type: "endTag",
+            tagName: ""
+        }
         return tagName(c)
     } else if(c == ">") {
 
@@ -39,22 +63,29 @@ function endTagOpen(c) {
 }
 
 function tagName(c) {
+    // 空白，标签名字结束，找属性
     if(c.match(/^[\t\n\f ]$/)) {
         return beforeAttributeName
     }
+    //  / 自结束
     if(c == "/") {
         return selfClosingStartTag
     }
+    // 继续读取名字
     if(c.match(/^[a-zA-Z]$/)) {
+        currentToken.tagName += c
         return tagName
     }
+    // 读取标签中的内容
     if(c == ">") {
+        emit(currentToken)
         return data
     }
     return tagName
 }
 
 function beforeAttributeName(c) {
+    // 空，继续找attribute
     if(c.match(/^[\t\n\f ]$/)) {
         return beforeAttributeName
     }
@@ -74,7 +105,7 @@ function selfClosingStartTag(c) {
     } else if(c == "EOF") {
 
     } else {
-        
+
     }
 }
 

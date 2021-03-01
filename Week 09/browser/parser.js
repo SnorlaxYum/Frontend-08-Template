@@ -14,6 +14,11 @@ function addCSSRules(text) {
     rules.push(...ast.stylesheet.rules)
 }
 
+function computeCSS(element) {
+    console.log(rules)
+    console.log("compute CSS for element", element)
+}
+
 //输出token
 function emit(token) {
     let top = stack[stack.length - 1]
@@ -34,6 +39,8 @@ function emit(token) {
                     value: token[p]
                 })
         }
+
+        computeCSS(element)
 
         top.children.push(element)
         element.parent = top

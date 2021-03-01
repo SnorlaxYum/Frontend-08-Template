@@ -15,8 +15,7 @@ function addCSSRules(text) {
 }
 
 function computeCSS(element) {
-    console.log(rules)
-    console.log("compute CSS for element", element)
+    var elements = stack.slice().reverse()
 }
 
 //输出token

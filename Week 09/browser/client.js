@@ -204,5 +204,5 @@ void async function() {
 
     let dom = parser.parseHTML(response.body)
 
-    console.log(response)
+    console.log(dom)
 }()

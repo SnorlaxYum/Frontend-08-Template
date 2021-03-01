@@ -1,9 +1,18 @@
+const css = require("css")
+
 // 当前token
 let currentToken = null
 let currentAttribute = null
 let currentTextNode = null
 
 let stack = [{type: "document", children: []}]
+
+let rules = []
+function addCSSRules(text) {
+    var ast = css.parse(text)
+    console.log(JSON.stringify(ast, null, "    "))
+    rules.push(...ast.stylesheet.rules)
+}
 
 //输出token
 function emit(token) {
@@ -37,6 +46,9 @@ function emit(token) {
         if(top.tagName != token.tagName) {
             throw new Error("Tag start end doesn't match!")
         } else {
+            if(top.tagName === "style") {
+                addCSSRules(top.children[0].content)
+            }
             stack.pop()
         }
         currentTextNode = null

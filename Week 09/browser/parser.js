@@ -65,76 +65,57 @@ function computeCSS(element) {
     if(!element.computedStyle)
         element.computedStyle = {}
     
-        for(let rule of rules) {
-            var selectorParts = rule.selectors[0].split(" ").reverse()
+    for(let rule of rules) {
+        var selectorParts = rule.selectors[0].split(" ").reverse()
 
-            if(!match(element, selectorParts[0]))
-                continue
+        if(!match(element, selectorParts[0]))
+            continue
 
-            let matched = false
+        let matched = false
 
-            var j = 1
-            for(var i = 0; i < elements.length; i++) {
-                if(match(elements[i], selectorParts[j])) {
-                    j++
-                }
-            }
-
-            if(j >= selectorParts.length)
-                matched = true
-            
-            if(matched) {
-                var sp = specificity(rule.selectors[0])
-                var computedStyle = element.computedStyle
-                for(var declaration of rule.declarations) {
-                    if(!computedStyle[declaration.property])
-                        computedStyle[declaration.property] = {}
-                    
-                    if(!computedStyle[declaration.property].specificity) {
-                        computedStyle[declaration.property].value = declaration.value
-                        computedStyle[declaration.property].specificity = sp
-                    } else if(compare(computedStyle[declaration.property].specificity, sp) < 0) {
-                        computedStyle[declaration.property].value = declaration.value
-                        computedStyle[declaration.property].specificity = sp
-                    }
-                }
+        var j = 1
+        for(var i = 0; i < elements.length; i++) {
+            if(match(elements[i], selectorParts[j])) {
+                j++
             }
         }
 
-        let inlineStyle = element.attributes.filter(p => p.name == "style")
-        css.parse("* {" + inlineStyle + "}")
+        if(j >= selectorParts.length)
+            matched = true
+        
+        if(matched) {
+            var sp = specificity(rule.selectors[0])
+            var computedStyle = element.computedStyle
+            for(var declaration of rule.declarations) {
+                if(!computedStyle[declaration.property])
+                    computedStyle[declaration.property] = {}
+                
+                if(!computedStyle[declaration.property].specificity) {
+                    computedStyle[declaration.property].value = declaration.value
+                    computedStyle[declaration.property].specificity = sp
+                } else if(compare(computedStyle[declaration.property].specificity, sp) < 0) {
+                    computedStyle[declaration.property].value = declaration.value
+                    computedStyle[declaration.property].specificity = sp
+                }
+            }
+        }
+    }
+
+    let inlineStyle = element.attributes.filter(p => p.name == "style")
+    if(inlineStyle.length > 0) {
+        console.log(inlineStyle)
         sp = [1, 0, 0, 0]
-        // for(...) {}
-        // for(let rule of [...css.parse("* {" + inlineStyle + "}")]) {
-        //     var selectorParts = rule.selectors[0].split(" ").reverse()
-
-        //     if(!match(element, selectorParts[0]))
-        //         continue
-
-        //     let matched = false
-
-        //     var j = 1
-        //     for(var i = 0; i < elements.length; i++) {
-        //         if(match(elements[i], selectorParts[j])) {
-        //             j++
-        //         }
-        //     }
-
-        //     if(j >= selectorParts.length)
-        //         matched = true
-            
-        //     if(matched) {
-        //         var sp = specificity(rule.selectors[0])
-        //         var computedStyle = element.computedStyle
-        //         for(var declaration of rule.declarations) {
-        //             if(!computedStyle[declaration.property])
-        //                 computedStyle[declaration.property] = {}
-                    
-        //             computedStyle[declaration.property].value = declaration.value
-        //             computedStyle[declaration.property].specificity = sp
-        //         }
-        //     }
-        // }
+        for(let rule of [...css.parse("* {" + inlineStyle[0].value + "}").stylesheet.rules]) {
+            var computedStyle = element.computedStyle
+            for(var declaration of rule.declarations) {
+                if(!computedStyle[declaration.property])
+                    computedStyle[declaration.property] = {}
+                
+                computedStyle[declaration.property].value = declaration.value
+                computedStyle[declaration.property].specificity = sp
+            }
+        }
+    }
 }
 
 //输出token

@@ -103,7 +103,6 @@ function computeCSS(element) {
 
     let inlineStyle = element.attributes.filter(p => p.name == "style")
     if(inlineStyle.length > 0) {
-        console.log(inlineStyle)
         sp = [1, 0, 0, 0]
         for(let rule of [...css.parse("* {" + inlineStyle[0].value + "}").stylesheet.rules]) {
             var computedStyle = element.computedStyle

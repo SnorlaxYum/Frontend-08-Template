@@ -86,3 +86,17 @@ npm install css
 #### 生成computed属性
 
 * 一旦选择器匹配，就应用选择器到元素上，形成computedStyle
+
+#### specificity的计算逻辑
+
+div div #id
+
+[0,     1,  0,      2]
+inline  id  class   tag
+
+div .la #id
+
+[0,     1,  1,      1]
+inline  id  class   tag
+
+下面覆盖上面

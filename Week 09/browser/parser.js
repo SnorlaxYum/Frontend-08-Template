@@ -34,6 +34,32 @@ function match(element, selector) {
     return false
 }
 
+function specificity(selector) {
+    var p = [0, 0, 0, 0]
+    var selectorParts = selector.split(" ")
+    for(var part of selectorParts) {
+        if(part.charAt(0) == "#") {
+            p[1]++
+        } else if(part.charAt(0) == ".") {
+            p[2]++
+        } else {
+            p[3]++
+        }
+    }
+    return p
+}
+
+function compare(sp1, sp2) {
+    if(sp1[0] - sp2[0])
+        return sp1[0] - sp2[0]
+    if(sp1[1] - sp2[1])
+        return sp1[1] - sp2[1]
+    if(sp1[2] - sp2[2])
+        return sp1[2] - sp2[2]
+
+    return sp1[3] - sp2[3]
+}
+
 function computeCSS(element) {
     var elements = stack.slice().reverse()
     if(!element.computedStyle)
@@ -58,15 +84,55 @@ function computeCSS(element) {
                 matched = true
             
             if(matched) {
+                var sp = specificity(rule.selectors[0])
                 var computedStyle = element.computedStyle
                 for(var declaration of rule.declarations) {
                     if(!computedStyle[declaration.property])
                         computedStyle[declaration.property] = {}
-                    computedStyle[declaration.property].value = declaration.value
+                    
+                    if(!computedStyle[declaration.property].specificity) {
+                        computedStyle[declaration.property].value = declaration.value
+                        computedStyle[declaration.property].specificity = sp
+                    } else if(compare(computedStyle[declaration.property].specificity, sp) < 0) {
+                        computedStyle[declaration.property].value = declaration.value
+                        computedStyle[declaration.property].specificity = sp
+                    }
                 }
-                console.log(element.computedStyle)
             }
         }
+
+        let inlineStyle = element.attributes.filter(p => p.name == "style")
+        sp = [1, 0, 0, 0]
+        // for(let rule of [...css.parse("* {" + inlineStyle + "}")]) {
+        //     var selectorParts = rule.selectors[0].split(" ").reverse()
+
+        //     if(!match(element, selectorParts[0]))
+        //         continue
+
+        //     let matched = false
+
+        //     var j = 1
+        //     for(var i = 0; i < elements.length; i++) {
+        //         if(match(elements[i], selectorParts[j])) {
+        //             j++
+        //         }
+        //     }
+
+        //     if(j >= selectorParts.length)
+        //         matched = true
+            
+        //     if(matched) {
+        //         var sp = specificity(rule.selectors[0])
+        //         var computedStyle = element.computedStyle
+        //         for(var declaration of rule.declarations) {
+        //             if(!computedStyle[declaration.property])
+        //                 computedStyle[declaration.property] = {}
+                    
+        //             computedStyle[declaration.property].value = declaration.value
+        //             computedStyle[declaration.property].specificity = sp
+        //         }
+        //     }
+        // }
 }
 
 //输出token

@@ -10,7 +10,7 @@ let stack = [{type: "document", children: []}]
 let rules = []
 function addCSSRules(text) {
     var ast = css.parse(text)
-    console.log(JSON.stringify(ast, null, "    "))
+    // console.log(JSON.stringify(ast, null, "    "))
     rules.push(...ast.stylesheet.rules)
 }
 
@@ -102,7 +102,9 @@ function computeCSS(element) {
         }
 
         let inlineStyle = element.attributes.filter(p => p.name == "style")
+        css.parse("* {" + inlineStyle + "}")
         sp = [1, 0, 0, 0]
+        // for(...) {}
         // for(let rule of [...css.parse("* {" + inlineStyle + "}")]) {
         //     var selectorParts = rule.selectors[0].split(" ").reverse()
 
@@ -431,5 +433,5 @@ module.exports.parseHTML = function parseHTML(html) {
         state = state(c)
     }
     state = state(EOF)
-    console.log(stack[0])
+    console.dir(stack[0])
 }

@@ -31,7 +31,7 @@ const server = http.createServer((req, res) => {
         </style>
         </head>
         <body>
-            <div style='color: black; background-color: white;'>
+            <div style='color: black; background-color: white;' class='aaa' style='color: white; background-color: black;'>
                 <img id='myid'/>
                 <img />
             </div>

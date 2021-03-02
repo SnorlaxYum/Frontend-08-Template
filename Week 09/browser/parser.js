@@ -101,17 +101,19 @@ function computeCSS(element) {
         }
     }
 
-    let inlineStyle = element.attributes.filter(p => p.name == "style")
-    if(inlineStyle.length > 0) {
+    let inlineStyles = element.attributes.filter(p => p.name == "style")
+    if(inlineStyles.length > 0) {
         sp = [1, 0, 0, 0]
-        for(let rule of [...css.parse("* {" + inlineStyle[0].value + "}").stylesheet.rules]) {
-            var computedStyle = element.computedStyle
-            for(var declaration of rule.declarations) {
-                if(!computedStyle[declaration.property])
-                    computedStyle[declaration.property] = {}
-                
-                computedStyle[declaration.property].value = declaration.value
-                computedStyle[declaration.property].specificity = sp
+        for(let inlineStyle of inlineStyles) {
+            for(let rule of [...css.parse("* {" + inlineStyle.value + "}").stylesheet.rules]) {
+                var computedStyle = element.computedStyle
+                for(var declaration of rule.declarations) {
+                    if(!computedStyle[declaration.property])
+                        computedStyle[declaration.property] = {}
+                    
+                    computedStyle[declaration.property].value = declaration.value
+                    computedStyle[declaration.property].specificity = sp
+                }
             }
         }
     }

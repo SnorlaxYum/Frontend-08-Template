@@ -40,7 +40,6 @@ function layout(element) {
 
 
     ['width', 'height'].forEach(size => {
-        console.log(size)
         if(style[size] === 'auto' || style[size] === '') {
             style[size] = null
         }

@@ -28,3 +28,31 @@
 * @namespace：https://www.w3.org/TR/css-namespaces-3/
 
 ![更完整的](./2021-03-14-210304_1920x1080_scrot.png)
+
+## CSS规则的结构
+
+* Selector
+    * https://www.w3.org/TR/selectors-3/
+    * https://www.w3.org/TR/selectors-4/
+* Declaration
+    * Key
+        * Properties
+        * Variables: https://www.w3.org/TR/css-variables/
+    * Value
+        * https://www.w3.org/TR/css-values-4/
+
+## 收集标准
+
+https://www.w3.org/TR/
+
+```js
+Array.prototype.slice.call(document.querySelector("#container").children).filter(e => e.getAttribute("data-tag").match(/css/)).map(e => ({name: e.children[1].innerText, url: e.children[1].children[0].href}))
+```
+## 总结
+
+* CSS语法
+* at-rule
+* selector
+* variables
+* value
+* 实验

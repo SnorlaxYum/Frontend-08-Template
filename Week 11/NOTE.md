@@ -56,3 +56,37 @@ Array.prototype.slice.call(document.querySelector("#container").children).filter
 * variables
 * value
 * 实验
+
+# CSS选择器
+
+## 选择器语法
+
+* 简单选择器
+    * *
+    * div svg|a
+    * .cls
+    * #id
+    * [attr=value]
+    * :hover
+    * :;before
+* 复合选择器
+    * <简单选择器> <简单选择器> <简单选择器>
+    * * 或者div必须写在最前面
+* 复杂选择器
+    * <复合选择器> <sp> <复合选择器>
+    * <复合选择器> ">" <复合选择器>
+    * <复合选择器> "~" <复合选择器>
+    * <复合选择器> "+" <复合选择器>
+    * <复合选择器> "||" <复合选择器>
+
+## 选择器的优先级
+
+#id div.a#id {
+    //....
+}
+
+[0,2,1,1]
+
+S = 0 *N^3 + 2 * N^2 +1 * N^1 +1
+取N = 10^6
+S = 2000001000001

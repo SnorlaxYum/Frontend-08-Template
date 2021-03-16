@@ -1,10 +1,10 @@
 /**
  * @var stack 元素栈
  */
-let stack = [{attributes: {}}], elementNotFound = false, curAttribute = "", attrValueIn = false
+let stack = [{}], elementNotFound = false, curAttribute = "", attrValueIn = false
 
 function stackReset() {
-    stack = [{attributes: {}}]
+    stack = [{}]
 }
 
 /**
@@ -25,7 +25,7 @@ function match(selector, element) {
         return false
     }
 
-    console.dir(stack)
+    // console.dir(stack)
 
     function isSameEle(ori) {
         for(let key of Object.keys(ori)) {
@@ -53,6 +53,7 @@ function match(selector, element) {
                         }
                     } else {
                         //something like ^=
+                        console.log(ori.attributes[attr])
                     }
                 }
             }
@@ -61,7 +62,6 @@ function match(selector, element) {
     }
 
     for(let i = stack.length-1; i >= 0; i--) {
-        console.log(i)
         if(stack[i].type === "element" && i === stack.length-1){
             if(!isSameEle(stack[i])) {
                 stackReset()
@@ -113,35 +113,34 @@ function match(selector, element) {
 // 因为时间原因，所以我做的这个版本跳过Unicode，并且规定只能字母开头
 
 function data(char) {
-    console.log(char)
-    if(char == "#") {
+    if(char === "#") {
         stack[stack.length-1].type = 'element'
         stack[stack.length-1].attributes = {}
         stack[stack.length-1].attributes.id = ''
         return getId
-    } else if(char == ".") {
+    } else if(char === ".") {
         stack[stack.length-1].type = 'element'
         stack[stack.length-1].attributes = {}
         if(!stack[stack.length-1].classList) {
             stack[stack.length-1].classList = []
         }
         return getClassName
-    } else if(char == "[") {
+    } else if(char === "[") {
         stack[stack.length-1].type = 'element'
         stack[stack.length-1].attributes = {}
         return getAttrName
-    } else if(char == " ") {
+    } else if(char === " ") {
         if(Object.keys(stack[stack.length-1]).length) {
             stack.push({})
         }
-    } else if(char == ">" || char == "~" || char == "+") {
+    } else if(char === ">" || char === "~" || char === "+") {
         if(Object.keys(stack[stack.length-1]).length) {
             stack.push({})
         }
         stack[stack.length-1].type = 'operator'
         stack[stack.length-1].value = char
         stack.push({})
-    } else if(char == "|") {
+    } else if(char === "|") {
         if(Object.keys(stack[stack.length-1]).length) {
             if(stack[stack.length-1].type === "element") {
                 stack.push({})
@@ -154,7 +153,7 @@ function data(char) {
                 }
             }
         }
-    } else if(char == "*") {
+    } else if(char === "*") {
         stack[stack.length-1].type = 'element'
     } else if(!stack[stack.length-1].identifierError) {
         if(stack[stack.length-1].localName) {
@@ -254,9 +253,9 @@ function getAttrName(char) {
         return data
     }
     
-    if(char === "~" || char === "|" || char === "^" || char === "$" || char === "*") {
+    if(char === ">" || char === "<" || char === "~" || char === "|" || char === "^" || char === "$" || char === "*") {
         stack[stack.length-1].attributes[curAttribute] = {relation: char}
-        return getAttrName
+        return getAttrValue
     }
 
     if(char === "=") {
@@ -292,14 +291,27 @@ function getAttrValue(char) {
             stack[stack.length-1].attributes[curAttribute].value += char
         }
     } else {
-        if(char === '"' || char === "'") {
+        if(char === '=') {
+            stack[stack.length-1].attributes[curAttribute].relation += char
+        } else if(char === '"' || char === "'") {
             attrValueIn = char
             stack[stack.length-1].attributes[curAttribute].value = ''
         } else if(char === "]") {
+            curAttribute = ''
             return data
         }
     }
     return getAttrValue
 }
  
+console.log(match("div #id.class.cls", document.getElementById("id")))
+console.log(match("div>#id.class.cls", document.getElementById("id")))
+console.log(match("body>div>div~#id.class.cls", document.getElementById("id")))
+console.log(match("body>div>div+#id.class.cls", document.getElementById("id")))
+console.log(match("body||div>div~#id.class.cls", document.getElementById("id")))
+
 console.log(match("a #id.class.cls", document.getElementById("id")))
+console.log(match("a>#id.class.cls", document.getElementById("id")))
+console.log(match("a>div>div~#id.class.cls", document.getElementById("id")))
+console.log(match("a>div>div+#id.class.cls", document.getElementById("id")))
+console.log(match("a||div>div~#id.class.cls", document.getElementById("id")))

@@ -77,15 +77,15 @@ function match(selector, element) {
                                 return false
                             }
                         } else if(ori.attributes[attr].relation === "|=") {
-                            if(!(Object(curEle.attributes)[attr].nodeValue === ori.attributes[attr].value) || !(Object(curEle.attributes)[attr].nodeValue.match(`^(${ori.attributes[attr].value}-)\\w+`))) {
+                            if(Object(curEle.attributes)[attr].nodeValue !== ori.attributes[attr].value && !(Object(curEle.attributes)[attr].nodeValue.match(`^(${ori.attributes[attr].value}-)\\w+`))) {
                                 return false
                             }
                         } else if(ori.attributes[attr].relation === "^=") {
-                            if(Object(curEle.attributes)[attr].nodeValue.match(`^(${ori.attributes[attr].value})\\w+`)) {
+                            if(!(Object(curEle.attributes)[attr].nodeValue.match(`^(${ori.attributes[attr].value})\\w+`))) {
                                 return false
                             }
                         } else if(ori.attributes[attr].relation === "$=") {
-                            if(Object(curEle.attributes)[attr].nodeValue.match(`\\w+(${ori.attributes[attr].value})$`)) {
+                            if(!(Object(curEle.attributes)[attr].nodeValue.match(`\\w+(${ori.attributes[attr].value})$`))) {
                                 return false
                             }
                         } else if(ori.attributes[attr].relation === "*=") {
@@ -154,19 +154,25 @@ function match(selector, element) {
 function data(char) {
     if(char === "#") {
         stack[stack.length-1].type = 'element'
-        stack[stack.length-1].attributes = {}
+        if(!stack[stack.length-1].attributes) {
+            stack[stack.length-1].attributes = {}
+        }
         stack[stack.length-1].attributes.id = ''
         return getId
     } else if(char === ".") {
         stack[stack.length-1].type = 'element'
-        stack[stack.length-1].attributes = {}
+        if(!stack[stack.length-1].attributes) {
+            stack[stack.length-1].attributes = {}
+        }
         if(!stack[stack.length-1].classList) {
             stack[stack.length-1].classList = []
         }
         return getClassName
     } else if(char === "[") {
         stack[stack.length-1].type = 'element'
-        stack[stack.length-1].attributes = {}
+        if(!stack[stack.length-1].attributes) {
+            stack[stack.length-1].attributes = {}
+        }
         return getAttrName
     } else if(char === " ") {
         if(Object.keys(stack[stack.length-1]).length) {
@@ -206,7 +212,9 @@ function data(char) {
         } else {
             if(char.match(/[[a-zA-Z]/)) {
                 stack[stack.length-1].type = 'element'
-                stack[stack.length-1].attributes = {}
+                if(!stack[stack.length-1].attributes) {
+                    stack[stack.length-1].attributes = {}
+                }
                 stack[stack.length-1].localName = char
             } else {
                 stack[stack.length-1].identifierError = "illegal starting letter in the element name"
@@ -228,6 +236,9 @@ function getId(char) {
     }
     if(stack[stack.length-1].identifierError) {
         return data
+    }
+    if(char === '[') {
+        return data(char)
     }
     if(char === ".") {
         if(!stack[stack.length-1].classList) {
@@ -261,6 +272,9 @@ function getClassName(char) {
     }
     if(stack[stack.length-1].identifierError) {
         return data
+    }
+    if(char === '[') {
+        return data(char)
     }
     if(char === ".") {
         stack[stack.length-1].classList.push('')
@@ -348,9 +362,20 @@ console.log(match("div>#id.class.cls", document.getElementById("id")))
 console.log(match("body>div>div~#id.class.cls", document.getElementById("id")))
 console.log(match("body>div>div+#id.class.cls", document.getElementById("id")))
 console.log(match("body||div>div~#id.class.cls", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id='id']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id~='id']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id|='id']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id^='i']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id$='d']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id*='i']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id>'a']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id>'a']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id<='z']", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id<='z']", document.getElementById("id")))
 
 console.log(match("a #id.class.cls", document.getElementById("id")))
 console.log(match("a>#id.class.cls", document.getElementById("id")))
 console.log(match("a>div>div~#id.class.cls", document.getElementById("id")))
 console.log(match("a>div>div+#id.class.cls", document.getElementById("id")))
+console.log(match("body||div>div~.class.cls[id$='ds']", document.getElementById("id")))
 console.log(match("a||div>div~#id.class.cls", document.getElementById("id")))

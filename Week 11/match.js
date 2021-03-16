@@ -65,7 +65,7 @@ function match(selector, element) {
                                 return false
                             }
                         } else if(ori.attributes[attr].relation === "<") {
-                            if(Object(curEle.attributes)[attr].nodeValue < ori.attributes[attr].value) {
+                            if(Object(curEle.attributes)[attr].nodeValue >= ori.attributes[attr].value) {
                                 return false
                             }
                         } else if(ori.attributes[attr].relation === "=") {

@@ -14,6 +14,10 @@ let curAttribute = ""
  * @var attrValueIn 在属性值内
  */
 let attrValueIn = false
+/**
+ * @var attrCharEscape 如变量名的意思，我不知道咋把这翻译成中文
+ */
+let attrCharEscape = false
 
 /**
  * 清空元素栈
@@ -391,7 +395,12 @@ function getAttrName(char) {
  */
 function getAttrValue(char) {
     if(attrValueIn) {
-        if(attrValueIn === char) {
+        if(!attrCharEscape && char === "\\") {
+            attrCharEscape = true
+        } else if(attrCharEscape) {
+            stack[stack.length-1].attributes[curAttribute].value += char
+            attrCharEscape = false
+        } else if(attrValueIn === char) {
             attrValueIn = false
         } else {
             stack[stack.length-1].attributes[curAttribute].value += char
@@ -426,6 +435,8 @@ console.log(match("body||div>div~.class.cls[id>'a']", document.getElementById("i
 console.log(match("body||div>div~.class.cls[id<='z']", document.getElementById("id")))
 console.log(match("body||div>div~.class.cls[id<='z']", document.getElementById("id")))
 console.log(match("body div[id='aaa']+.class.cls[id='id']", document.getElementById("id")))
+console.log(match('div[a="a\\"a"]', document.querySelector('div[a="a\\"a"]')))
+console.log(match('body>div[a="a\\"a"]', document.querySelector('div[a="a\\"a"]')))
 
 console.log(match("a #id.class.cls", document.getElementById("id")))
 console.log(match("a>#id.class.cls", document.getElementById("id")))
@@ -435,3 +446,4 @@ console.log(match("body||div>div~.class.cls[id$='ds']", document.getElementById(
 console.log(match("a||div>div~#id.class.cls", document.getElementById("id")))
 console.log(match("body div[id='aa']+.class.cls[id='id']", document.getElementById("id")))
 console.log(match("[id='aa']>div[id='aaa']+.class.cls[id='id']", document.getElementById("id")))
+console.log(match('body+div[a="a\\"a"]', document.querySelector('div[a="a\\"a"]')))

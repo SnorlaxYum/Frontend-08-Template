@@ -91,7 +91,7 @@ function match(selector, element) {
                     stackReset()
                     return false
                 }
-            } else if(stack[i].value) {
+            } else if(stack[i].value === '+') {
             
             }
         }
@@ -111,10 +111,12 @@ function data(char) {
     console.log(char)
     if(char == "#") {
         stack[stack.length-1].type = 'element'
+        stack[stack.length-1].attributes = {}
         stack[stack.length-1].attributes.id = ''
         return getId
     } else if(char == ".") {
         stack[stack.length-1].type = 'element'
+        stack[stack.length-1].attributes = {}
         if(!stack[stack.length-1].classList) {
             stack[stack.length-1].classList = []
         }
@@ -125,11 +127,15 @@ function data(char) {
         return getAttrName
     } else if(char == " ") {
         if(Object.keys(stack[stack.length-1]).length) {
-            stack.push({attributes: {}})
+            stack.push({})
         }
     } else if(char == ">" || char == "~" || char == "+" || char == "||") {
+        if(Object.keys(stack[stack.length-1]).length) {
+            stack.push({})
+        }
         stack[stack.length-1].type = 'operator'
         stack[stack.length-1].value = char
+        stack.push({})
     } else if(char == "*") {
         stack[stack.length-1].type = 'element'
     } else if(!stack[stack.length-1].identifierError) {
@@ -144,6 +150,7 @@ function data(char) {
         } else {
             if(char.match(/[[a-zA-Z]/)) {
                 stack[stack.length-1].type = 'element'
+                stack[stack.length-1].attributes = {}
                 stack[stack.length-1].localName = char
             } else {
                 stack[stack.length-1].identifierError = "illegal starting letter in the element name"

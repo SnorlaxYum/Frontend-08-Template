@@ -77,8 +77,13 @@ function match(selector, element) {
                 return false
             }
             return true
-        } else {
-
+        } else if(stack[stack.length-1].type === 'operator') {
+            if(stack[stack.length-1].value === '>') {
+                if(!isSameEle(stack[--i])) {
+                    stackReset()
+                    return false
+                }
+            }
         }
     }
     stackReset()

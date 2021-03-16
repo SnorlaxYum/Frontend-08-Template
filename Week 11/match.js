@@ -66,6 +66,9 @@ function match(selector, element) {
                 }
             } else if(key === "attributes") {
                 for(let attr of Object.keys(ori[key])){
+                    if(!Object(curEle.attributes)[attr]) {
+                        return false
+                    }
                     if(typeof ori.attributes[attr] === "string") {
                         if(ori.attributes[attr] !== Object(curEle.attributes)[attr].nodeValue) {
                             return false
@@ -430,4 +433,4 @@ console.log(match("a>div>div~#id.class.cls", document.getElementById("id")))
 console.log(match("a>div>div+#id.class.cls", document.getElementById("id")))
 console.log(match("body||div>div~.class.cls[id$='ds']", document.getElementById("id")))
 console.log(match("a||div>div~#id.class.cls", document.getElementById("id")))
-console.log(match("body div[id='aa']+.class.cls[id='id']", document.getElementById("id")))
+// console.log(match("body div[id='aa']+.class.cls[id='id']", document.getElementById("id")))

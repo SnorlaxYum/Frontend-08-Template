@@ -52,8 +52,47 @@ function match(selector, element) {
                             return false
                         }
                     } else {
-                        //something like ^=
-                        console.log(ori.attributes[attr])
+                        if(ori.attributes[attr].relation === ">=") {
+                            if(Object(curEle.attributes)[attr].nodeValue >= ori.attributes[attr].value) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === ">") {
+                            if(Object(curEle.attributes)[attr].nodeValue > ori.attributes[attr].value) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === "<=") {
+                            if(Object(curEle.attributes)[attr].nodeValue <= ori.attributes[attr].value) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === "<") {
+                            if(Object(curEle.attributes)[attr].nodeValue < ori.attributes[attr].value) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === "=") {
+                            if(ori.attributes[attr].value !== Object(curEle.attributes)[attr].nodeValue) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === "~=") {
+                            if(Object(curEle.attributes)[attr].nodeValue.search(ori.attributes[attr].value) === -1) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === "|=") {
+                            if(!(Object(curEle.attributes)[attr].nodeValue === ori.attributes[attr].value) || !(Object(curEle.attributes)[attr].nodeValue.match(`^(${ori.attributes[attr].value}-)\\w+`))) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === "^=") {
+                            if(Object(curEle.attributes)[attr].nodeValue.match(`^(${ori.attributes[attr].value})\\w+`)) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === "$=") {
+                            if(Object(curEle.attributes)[attr].nodeValue.match(`\\w+(${ori.attributes[attr].value})$`)) {
+                                return false
+                            }
+                        } else if(ori.attributes[attr].relation === "*=") {
+                            if(Object(curEle.attributes)[attr].nodeValue.search(ori.attributes[attr].value) === -1) {
+                                return false
+                            }
+                        }
                     }
                 }
             }

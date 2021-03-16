@@ -76,7 +76,8 @@ function match(selector, element) {
                 return false
             }
         } else if(stack[i].type === 'operator') {
-            if(stack[i].value === '>') {
+            if(stack[i].value === '>' || stack[i].value === '||') {
+                // 因为时间有限，所以把||并入>，因为行和列也是绝对母子关系
                 if(!isSameEle(stack[--i])) {
                     stackReset()
                     return false
@@ -92,7 +93,11 @@ function match(selector, element) {
                     return false
                 }
             } else if(stack[i].value === '+') {
-            
+                i--
+                curEle = preEle.previousElementSibling
+                if(!isSameEle(stack[i])) {
+                    return false
+                }
             }
         }
         preEle = curEle
@@ -129,13 +134,26 @@ function data(char) {
         if(Object.keys(stack[stack.length-1]).length) {
             stack.push({})
         }
-    } else if(char == ">" || char == "~" || char == "+" || char == "||") {
+    } else if(char == ">" || char == "~" || char == "+") {
         if(Object.keys(stack[stack.length-1]).length) {
             stack.push({})
         }
         stack[stack.length-1].type = 'operator'
         stack[stack.length-1].value = char
         stack.push({})
+    } else if(char == "|") {
+        if(Object.keys(stack[stack.length-1]).length) {
+            if(stack[stack.length-1].type === "element") {
+                stack.push({})
+                stack[stack.length-1].type = 'operator'
+                stack[stack.length-1].value = char
+            } else if(stack[stack.length-1].type === "operator") {
+                if(stack[stack.length-1].value === char) {
+                    stack[stack.length-1].value += char
+                    stack.push({})
+                }
+            }
+        }
     } else if(char == "*") {
         stack[stack.length-1].type = 'element'
     } else if(!stack[stack.length-1].identifierError) {

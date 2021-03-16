@@ -46,6 +46,7 @@ function match(selector, element) {
     }
 
     // console.dir(stack)
+
     /**
      * 检测与当前元素是否一致
      * @param {*} ori 目标元素
@@ -62,8 +63,8 @@ function match(selector, element) {
                 let classList = Array.from(curEle.classList)
                 for(let className of ori[key]) {
                     if(classList.indexOf(className) === -1) {
-                        console.log("className not found, ", className)
-                        console.dir(curEle)
+                        // console.log("className not found, ", className)
+                        // console.dir(curEle)
                         return false
                     }
                 }
@@ -202,7 +203,7 @@ function data(char) {
             stack[stack.length-1].attributes = {}
         }
         if(!stack[stack.length-1].classList) {
-            stack[stack.length-1].classList = []
+            stack[stack.length-1].classList = ['']
         }
         return getClassName
     } else if(char === "[") {
@@ -452,3 +453,4 @@ console.log(match("[id='aa']>div[id='aaa']+.class.cls[id='id']", document.getEle
 console.log(match('body+div[a="a\\"a"]', document.querySelector('div[a="a\\"a"]')))
 console.log(match('a html', document.querySelector('div[a="a\\"a"]')))
 console.log(match('a>html', document.querySelector('div[a="a\\"a"]')))
+console.log(match('.cl', document.querySelector('.class')))

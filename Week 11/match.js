@@ -15,14 +15,18 @@ let curAttribute = ""
  */
 let attrValueIn = false
 
+/**
+ * 清空元素栈
+ */
 function stackReset() {
     stack = [{}]
 }
 
 /**
- * 检验选择器和目标元素是否匹配
+ * 检验选择器和目标元素是否匹配，出结果前会清空元素栈
  * @param {String} selector 选择器
  * @param {HTMLElement} element 目标元素
+ * @returns {Boolean} 结果
  */
 function match(selector, element) {
     let state = data, curEle = element, preEle
@@ -38,7 +42,10 @@ function match(selector, element) {
     }
 
     // console.dir(stack)
-
+    /**
+     * 检测与当前元素是否一致
+     * @param {*} ori 目标元素
+     */
     function isSameEle(ori) {
         for(let key of Object.keys(ori)) {
             if(key === "type") {
@@ -112,6 +119,9 @@ function match(selector, element) {
         return true
     }
 
+    /**
+     * 由右到左，对元素进行遍历
+     */
     for(let i = stack.length-1; i >= 0; i--) {
         if(stack[i].type === "element" && i === stack.length-1){
             if(!isSameEle(stack[i])) {
@@ -163,6 +173,11 @@ function match(selector, element) {
 // 元素名字、ID、class名字每个字母必须得在这个范围——[a-zA-Z0-9] and ISO 10646 characters U+00A0 and higher, plus the hyphen (-) and the underscore (_)，且不得以数字、两个hyphen（-）开头
 // 因为时间原因，所以我做的这个版本跳过Unicode，并且规定只能字母开头
 
+/**
+ * 字符状态机，用来将选择器字符转成元素信息，堆进栈里
+ * @param {String} char 字符
+ * @returns {Function} 下一个状态
+ */
 function data(char) {
     if(char === "#") {
         stack[stack.length-1].type = 'element'
@@ -238,10 +253,18 @@ function data(char) {
     return data
 }
 
+/**
+ * 死路
+ */
 function end() {
     return end
 }
 
+/**
+ * 拿到元素ID
+ * @param {String} char 字符
+ * @returns {Function} 下一个状态
+ */
 function getId(char) {
     if(char == " ") {
         return data(char)
@@ -278,6 +301,11 @@ function getId(char) {
     return getId
 }
 
+/**
+ * 拿到元素className，可能是多个
+ * @param {String} char 字符
+ * @returns {Function} 下一个状态
+ */
 function getClassName(char) {
     if(char == " ") {
         return data(char)
@@ -312,6 +340,11 @@ function getClassName(char) {
     return getClassName
 }
 
+/**
+ * 拿到元素属性名字
+ * @param {String} char 字符
+ * @returns {Function} 下一个状态
+ */
 function getAttrName(char) {
     if(char === "]") {
         stack[stack.length-1].attributes[curAttribute] = {}
@@ -348,6 +381,11 @@ function getAttrName(char) {
     return getAttrName
 }
 
+/**
+ * 拿到元素属性值
+ * @param {String} char 字符
+ * @returns {Function} 下一个状态
+ */
 function getAttrValue(char) {
     if(attrValueIn) {
         if(attrValueIn === char) {

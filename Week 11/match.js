@@ -51,6 +51,9 @@ function match(selector, element) {
      * @param {*} ori 目标元素
      */
     function isSameEle(ori) {
+        if(!curEle) {
+            return false
+        }
         for(let key of Object.keys(ori)) {
             if(key === "type") {
                 continue
@@ -447,3 +450,5 @@ console.log(match("a||div>div~#id.class.cls", document.getElementById("id")))
 console.log(match("body div[id='aa']+.class.cls[id='id']", document.getElementById("id")))
 console.log(match("[id='aa']>div[id='aaa']+.class.cls[id='id']", document.getElementById("id")))
 console.log(match('body+div[a="a\\"a"]', document.querySelector('div[a="a\\"a"]')))
+console.log(match('a html', document.querySelector('div[a="a\\"a"]')))
+console.log(match('a>html', document.querySelector('div[a="a\\"a"]')))

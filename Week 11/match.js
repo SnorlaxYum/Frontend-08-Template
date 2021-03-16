@@ -61,30 +61,42 @@ function match(selector, element) {
     }
 
     for(let i = stack.length-1; i >= 0; i--) {
+        console.log(i)
         if(stack[i].type === "element" && i === stack.length-1){
             if(!isSameEle(stack[i])) {
                 stackReset()
                 return false
             }
-            preEle = curEle
-            curEle = curEle.parentElement
         } else if(stack[i].type === "element") {
             while(curEle && !isSameEle(stack[i])) {
                 curEle = curEle.parentElement
             }
-            stackReset()
             if(!curEle) {
+                stackReset()
                 return false
             }
-            return true
-        } else if(stack[stack.length-1].type === 'operator') {
-            if(stack[stack.length-1].value === '>') {
+        } else if(stack[i].type === 'operator') {
+            if(stack[i].value === '>') {
                 if(!isSameEle(stack[--i])) {
                     stackReset()
                     return false
                 }
+            } else if(stack[i].value === '~') {
+                i--
+                curEle = preEle.previousElementSibling
+                while(curEle && !isSameEle(stack[i])) {
+                    curEle = curEle.previousElementSibling
+                }
+                if(!curEle) {
+                    stackReset()
+                    return false
+                }
+            } else if(stack[i].value) {
+            
             }
         }
+        preEle = curEle
+        curEle = curEle.parentElement
     }
     stackReset()
     return true;

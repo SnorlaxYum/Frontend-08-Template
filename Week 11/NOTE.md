@@ -90,3 +90,30 @@ Array.prototype.slice.call(document.querySelector("#container").children).filter
 S = 0 *N^3 + 2 * N^2 +1 * N^1 +1
 取N = 10^6
 S = 2000001000001
+
+## 伪类
+
+* 链接/行为 
+    * :any-link
+    * :link :visited
+    * :hover
+    * :active
+    * :focus
+    * :target
+* 树结构
+    * :empty
+    * :nth-child()
+    * :nth-last-child()
+    * :first-child :last-child :only-child（会破坏回溯）
+* 逻辑型
+    * :not伪类
+    * :where :has
+
+## 伪元素
+
+* ::before
+* ::after
+* ::first-line
+* ::first-letter
+
+![](./2021-03-15-135051_1920x1080_scrot.png)

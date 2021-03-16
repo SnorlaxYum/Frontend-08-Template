@@ -1,7 +1,19 @@
 /**
  * @var stack 元素栈
  */
-let stack = [{}], elementNotFound = false, curAttribute = "", attrValueIn = false
+let stack = [{}]
+/**
+ * @var elementNotFound 没找到目标元素
+ */
+let elementNotFound = false
+/**
+ * @var 目前属性
+ */
+let curAttribute = ""
+/**
+ * @var attrValueIn 在属性值内
+ */
+let attrValueIn = false
 
 function stackReset() {
     stack = [{}]
@@ -372,6 +384,7 @@ console.log(match("body||div>div~.class.cls[id>'a']", document.getElementById("i
 console.log(match("body||div>div~.class.cls[id>'a']", document.getElementById("id")))
 console.log(match("body||div>div~.class.cls[id<='z']", document.getElementById("id")))
 console.log(match("body||div>div~.class.cls[id<='z']", document.getElementById("id")))
+console.log(match("body div[id='aaa']+.class.cls[id='id']", document.getElementById("id")))
 
 console.log(match("a #id.class.cls", document.getElementById("id")))
 console.log(match("a>#id.class.cls", document.getElementById("id")))
@@ -379,3 +392,4 @@ console.log(match("a>div>div~#id.class.cls", document.getElementById("id")))
 console.log(match("a>div>div+#id.class.cls", document.getElementById("id")))
 console.log(match("body||div>div~.class.cls[id$='ds']", document.getElementById("id")))
 console.log(match("a||div>div~#id.class.cls", document.getElementById("id")))
+console.log(match("body div[id='aa']+.class.cls[id='id']", document.getElementById("id")))

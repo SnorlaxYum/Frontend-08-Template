@@ -117,3 +117,5 @@ S = 2000001000001
 * ::first-letter
 
 ![](./2021-03-15-135051_1920x1080_scrot.png)
+
+由于时间原因，match做的比较简化，identifier跳过Unicode，并且规定只能字母开头

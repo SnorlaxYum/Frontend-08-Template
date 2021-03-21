@@ -54,5 +54,5 @@ Text
 
 float与clear……
 
-margin堆叠
+margin堆叠，margin collapse，堆叠高度与最高margin相等，只会发生在BFC里，不会发生在IFC或是flex中
 ![](2021-03-21-214343_1920x1080_scrot.png)

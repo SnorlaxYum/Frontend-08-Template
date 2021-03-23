@@ -52,7 +52,49 @@ Text
 
 ### 正常流的块级排布
 
-float与clear……
+正常流两个复杂的机制：float与clear……
 
 margin堆叠，margin collapse，堆叠高度与最高margin相等，只会发生在BFC里，不会发生在IFC或是flex中
 ![](2021-03-21-214343_1920x1080_scrot.png)
+
+### BFC合并
+
+BFC（Block Formatting Context），块级格式化上下文
+
+* block box && overflow: visible
+    * BFC合并与float
+    * BFC合并与边距折叠
+
+#### Block
+
+* BLock Container：里面有BFC的
+    * 能容纳正常流的盒，里面就有BFC，想想有哪些？
+* Block-level Box：外面有BFC的
+* Block Box = BLock Container + Block-level Box：里外都有BFC的
+
+### Block Container
+
+* block
+* inline-block
+* table-cell
+* flex item
+* grid cell
+* table-caption
+
+#### Block-level Box
+
+![](2021-03-23-215119_1920x1080_scrot.png)
+
+`display: run-in`跟着自己上一个元素来
+
+#### 设立BFC
+
+* floats
+* absolutely positioned elements
+* block containers (such as inline-blocks, table-cells, and table-captions) that are not block boxes,
+    * flex items
+    * grid cell
+    * ......
+* and block boxes with `overflow` other than `visible`
+
+换种方式更好记，能容纳正常流的盒，我们都认为它会创建BFC，但是只有一种情况例外（block box && overflow: visible）

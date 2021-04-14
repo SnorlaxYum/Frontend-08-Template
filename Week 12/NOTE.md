@@ -98,3 +98,104 @@ BFC（Block Formatting Context），块级格式化上下文
 * and block boxes with `overflow` other than `visible`
 
 换种方式更好记，能容纳正常流的盒，我们都认为它会创建BFC，但是只有一种情况例外（block box && overflow: visible）
+
+### Flex排版
+
+* 收集盒进行
+* 计算盒在主轴方向的排布
+* 计算盒在交叉轴方向的排布
+
+#### 分行
+
+* 根据主轴尺寸，把元素分进行
+* 如果设置了no-wrap，则强行分配进第一行
+
+#### 计算主轴方向
+
+* 找出所有flex元素
+* 把主轴方向的剩余尺寸按比例分配给这些元素
+* 若剩余空间为负数，所有flex元素为0，等比压缩剩余元素
+
+#### 计算交叉轴方向
+
+* 根据每一行中最大元素尺寸计算行高
+* 根据行高flex-align和item-align，确定元素具体位置
+
+## CSS动画与绘制
+
+### 动画
+
+* @keyframs定义
+* animation：使用
+
+#### animation
+
+```css
+@keyframes mykf
+{
+    from {background: red;}
+    to {background: yellow;}
+}
+
+div
+{
+    animation: mykf 5s infinite;
+}
+```
+
+* animation-name 时间曲线
+* animation-duration 动画的时长
+* animation-timing-function 动画的时间曲线
+* animation-delay 动画开始前的延迟
+* animation-ieration-count 动画的播放次数
+* animation-direction 动画的方向
+
+#### transition
+
+```css
+@keyframes mykf {
+    0% {top: 0; transition: top ease}
+    50% {top: 30px; transition: top ease-in}
+    75% {top: 10px; transition: top ease-out}
+    100% {top: 0; transition: top linear}
+}
+```
+
+* transition使用
+    * transition-property 要变换的属性
+    * transition-duration 变换的时长
+    * transition-timing-function 时间曲线
+    * transition-delay 延迟
+
+cubic-bezier.com
+
+### 颜色
+
+![](2021-03-28-204442_2560x1440_scrot.png)
+
+视锥细胞只有三种，分别能感应红绿蓝三原色的光（RGB三原色的来历）；自然界的所有颜色给眼睛的刺激只有红绿蓝
+
+编程适用的颜色谱系
+![](2021-03-28-205228_2560x1440_scrot.png)
+
+H（Hue）-色相（6种颜色之间，把6种颜色拼成了一个色盘）
+S-纯度（颜色杂色的数量，S越高，颜色越鲜艳越漂亮）
+L-亮度
+V-色值（明度，Brightness）
+
+### 绘制
+
+* 几何图形
+    * border
+    * box-shadow
+    * border-radius
+* 文字
+    * font
+    * text-decoration
+* 位图
+    * background-image
+
+不推荐用这些做一些黑魔法，尽量保留原生的意义
+
+* data uri + svg
+* data:image/svg+xml,<svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg"><ellipse cx="300" cy="150" rx="200" ry="80" style="fill:rgb(200,100,50);stroke:rgb(0,0,100); stroke-width:2"/></svg>

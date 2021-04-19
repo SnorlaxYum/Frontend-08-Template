@@ -1,0 +1,24 @@
+<div id="a">
+    <span>1</span>
+    <p>2</p>
+    <p>3</p>
+    <p>4</p>
+</div>
+<script>
+let element = document.getElementById("a");
+
+function reverseChildren(element) {
+    let range = new Range()
+    range.selectNodeContents(element)
+
+    let fragment = range.extractContents()
+    // fragment不需要重排，性能比较高
+    let l = fragment.childNodes.length
+    while(l-- > 0) {
+        fragment.appendChild(fragment.childNodes[l])
+    }
+    element.appendChild(fragment)
+}
+
+reverseChildren(element);
+</script>

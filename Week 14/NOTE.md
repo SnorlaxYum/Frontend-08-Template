@@ -492,7 +492,7 @@ Error: Cannot find module 'webpack-cli/bin/config-yargs'
 
 How I solved it ([Link](https://stackoverflow.com/a/64304022)):
 ```
-yarn run webpack dev
+yarn run webpack serve
 ```
 
 In dev mode, generated js won't be written to disk, to use them in browser, we need to do so by configuring webpack(https://github.com/webpack/webpack-dev-server/issues/1141#issuecomment-443468587, https://webpack.js.org/configuration/dev-server/#devserverwritetodisk-):  

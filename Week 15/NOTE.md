@@ -7,3 +7,5 @@ devServer: {
         publicPath: '/dist/'
     },
 ```
+
+三次贝塞尔曲线：cubic-bezier.com

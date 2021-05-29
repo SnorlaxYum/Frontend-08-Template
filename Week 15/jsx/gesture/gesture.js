@@ -89,6 +89,11 @@ let isPan = false, isTap = true, isPress = false
 let start = (point, context) => {
     //console.log("start", point.clientX, point.clientY)
     context.startX = point.clientX, context.startY = point.clientY
+    context.points = [{
+        t: Date.now(),
+        x: point.clientX,
+        y: point.clientY
+    }]
 
     context.isTap = true
     context.isPan = false
@@ -101,6 +106,7 @@ let start = (point, context) => {
         context.handler = null
         console.log("pressstart")
     }, 500)
+    dispatch("start", {x: point.clientX, y: point.clientY})
 }
 
 let move = (point, context) => {
@@ -119,6 +125,19 @@ let move = (point, context) => {
         console.log("pan")
     }
 
+    context.points = context.points.filter(point => Date.now() - point.t < 500)
+
+    context.points.push({
+        t: Date.now(),
+        x: point.clientX,
+        y: point.clientY
+    })
+
+    dispatch("move", {
+        t: Date.now(),
+        dx,
+        dy
+    })
     //console.log("move", point.clientX, point.clientY)
     
 }
@@ -134,6 +153,26 @@ let end = (point, context) => {
     if(context.isPress) {
         console.log("pressend")
     }
+
+    context.points = context.points.filter(point => Date.now() - point.t < 500)
+    let d, v
+    if(!context.points.length) {
+        v = 0
+    } else {
+        d = Math.sqrt((point.clientX - context.points[0].x) ** 2 +
+            (point.clientY - context.points[0].y) ** 2)
+        v = d / (Date.now() - context.points[0].t)
+    }
+
+    if(v>1.5) {
+        console.log("flick")
+        context.isFlick = true
+    } else {
+        context.isFlick = false
+    }
+
+    console.log(v)
+    dispatch("end", {x: point.clientX, y: point.clientY})
     // console.log("end", point.clientX, point.clientY)
     
 }
@@ -141,6 +180,7 @@ let end = (point, context) => {
 let cancel = (point, context) => {
     clearTimeout(context.handler)
     console.log("cancel", point.clientX, point.clientY)
+    dispatch("cancel", {x: point.clientX, y: point.clientY})
 }
 
 function dispatch(type, properties) {

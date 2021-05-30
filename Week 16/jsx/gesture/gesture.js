@@ -106,7 +106,10 @@ export class Recognizer {
     }
 
     start(point, context) {
+
         context.startX = point.clientX, context.startY = point.clientY
+
+        this.dispatcher.dispatch("start", {clientX: point.clientX, clientY: point.clientY})
         context.points = [{
             t: Date.now(),
             x: point.clientX,
@@ -124,7 +127,6 @@ export class Recognizer {
             context.handler = null
             this.dispatcher.dispatch("press", {})
         }, 500)
-        this.dispatcher.dispatch("start", {x: point.clientX, y: point.clientY})
     }
     
     move(point, context) {
@@ -193,7 +195,8 @@ export class Recognizer {
                 clientX: point.clientX,
                 clientY: point.clientY,
                 isVertical: context.isVertical,
-                isFlick: context.isFlick
+                isFlick: context.isFlick,
+                velocity: v
             })
         } else {
             context.isFlick = false
@@ -206,9 +209,19 @@ export class Recognizer {
                 clientX: point.clientX,
                 clientY: point.clientY,
                 isVertical: context.isVertical,
-                isFlick: context.isFlick
+                isFlick: context.isFlick,
+                velocity: v
             })
         }
+        this.dispatcher.dispatch("end", {
+            startX: context.startX,
+            startY: context.startY,
+            clientX: point.clientX,
+            clientY: point.clientY,
+            isVertical: context.isVertical,
+            isFlick: context.isFlick,
+            velocity: v
+        })
     
         this.dispatcher.dispatch("end", {x: point.clientX, y: point.clientY})
         
